@@ -26,7 +26,7 @@ include(CMakeParseArguments)
 function(add_qt_wasm_app TARGET)
 
   set(QT_WASM_OPTIONS DISABLE_DEPLOYMENT)
-  set(QT_WASM_ONE_VALUE_ARG NAME)
+  set(QT_WASM_ONE_VALUE_ARG NAME INITIAL_MEMORY MAXIMUM_MEMORY)
   set(QT_WASM_MULTI_VALUE_ARG)
 
   # parse the macro arguments
@@ -75,6 +75,15 @@ function(add_qt_wasm_app TARGET)
   # Enable Fetch API
   # https://emscripten.org/docs/api_reference/fetch.html
   target_link_libraries(${TARGET} PUBLIC "-s FETCH=1")
+
+  if(ARGWASM_INITIAL_MEMORY)
+    # todo : update to INITIAL_MEMORY=... when updating to emscripten 1.39.13
+    target_link_libraries(${TARGET} PUBLIC "-s TOTAL_MEMORY=${ARGWASM_INITIAL_MEMORY}")
+  endif()
+  if(ARGWASM_MAXIMUM_MEMORY)
+    # todo : update to MAXIMUM_MEMORY=... when updating to emscripten 1.39.13
+    target_link_libraries(${TARGET} PUBLIC "-s WASM_MEM_MAX=${ARGWASM_MAXIMUM_MEMORY}")
+  endif()
 
   # Deploy default qt html/loader files
   if(NOT ARGWASM_DISABLE_DEPLOYMENT)

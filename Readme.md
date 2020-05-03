@@ -22,7 +22,9 @@ This generates the following files:
 ```bash
 add_qt_wasm_app(YourApp
   NAME "index"
-  DISABLE_DEPLOYMENT)
+  DISABLE_DEPLOYMENT
+  INITIAL_MEMORY 512MB
+  MAXIMUM_MEMORY 4GB)
 ```
 
 **NAME**
@@ -34,6 +36,15 @@ Specify the name of the HTML container. By default it will be the target name. T
 Disable the deployment of Qt file. The compilation will only leave you with a `YourApp.js` and `YourApp.wasm`. You will need to provide your own `qtloader.js` that load the qt application, and an html file to embed the app into a `canvas`.
 
 *NAME doesn't have any effect with this option set.*
+
+**INITIAL_MEMORY**
+
+Size of the module, can be expressed in bytes, or with KB/MB/GB/TB.
+Example: 512MB.
+
+**MAXIMUM_MEMORY**
+
+Optionally support 2GB+ heap sizes. To do this we make the JS code have unsigned pointers (we need all 32 bits in them now), which can slightly increase code size (>>> instead of >>). This only happens when the heap size may be over 2GB, which you must opt into explicitly, by setting `MAXIMUM_MEMORY` to a higher value (i.e. by default you do not get support for 2GB+ heaps).
 
 ## ✏️ CMake Integration
 
