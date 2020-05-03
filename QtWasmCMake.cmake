@@ -83,6 +83,9 @@ function(add_qt_wasm_app TARGET)
       set(ARGWASM_NAME ${TARGET})
     endif()
 
+    # APPNAME will configure html file
+    set(APPNAME ${TARGET})
+
     configure_file("${QT_WASM_QT_ROOT}/plugins/platforms/wasm_shell.html"
                    "${CMAKE_CURRENT_BINARY_DIR}/${ARGWASM_NAME}.html")
     configure_file("${QT_WASM_QT_ROOT}/plugins/platforms/qtloader.js"
