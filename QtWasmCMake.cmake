@@ -95,11 +95,27 @@ function(add_qt_wasm_app TARGET)
     # APPNAME will configure html file
     set(APPNAME ${TARGET})
 
+    get_target_property(TARGET_OUTPUT_FOLDER ${TARGET} RUNTIME_OUTPUT_DIRECTORY)
+
     configure_file("${QT_WASM_QT_ROOT}/plugins/platforms/wasm_shell.html"
                    "${CMAKE_CURRENT_BINARY_DIR}/${ARGWASM_NAME}.html")
+
+    add_custom_command(TARGET ${TARGET} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/${ARGWASM_NAME}.html" "$<TARGET_FILE_DIR:${TARGET}>"
+      COMMENT "Deploy ${CMAKE_CURRENT_BINARY_DIR}/${ARGWASM_NAME}.html")
+
     configure_file("${QT_WASM_QT_ROOT}/plugins/platforms/qtloader.js"
-                  ${CMAKE_CURRENT_BINARY_DIR}/qtloader.js COPYONLY)
+                  "${CMAKE_CURRENT_BINARY_DIR}/qtloader.js" COPYONLY)
+
+    add_custom_command(TARGET ${TARGET} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/qtloader.js" "$<TARGET_FILE_DIR:${TARGET}>"
+      COMMENT "Deploy ${CMAKE_CURRENT_BINARY_DIR}/qtloader.js")
+
     configure_file("${QT_WASM_QT_ROOT}/plugins/platforms/qtlogo.svg"
-                   ${CMAKE_CURRENT_BINARY_DIR}/qtlogo.svg COPYONLY)
+                   "${CMAKE_CURRENT_BINARY_DIR}/qtlogo.svg" COPYONLY)
+
+    add_custom_command(TARGET ${TARGET} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/qtlogo.svg" "$<TARGET_FILE_DIR:${TARGET}>"
+      COMMENT "Deploy ${CMAKE_CURRENT_BINARY_DIR}/qtlogo.svg")
   endif()
 endfunction()
