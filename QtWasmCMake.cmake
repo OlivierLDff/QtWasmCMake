@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
+  message(STATUS "Set build type to ${CMAKE_BUILD_TYPE}")
+endif ()
+
 # ┌──────────────────────────────────────────────────────────────────┐
 # │                       ENVIRONMENT                                │
 # └──────────────────────────────────────────────────────────────────┘
